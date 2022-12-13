@@ -1,0 +1,8 @@
+{
+    "env":{
+        "DB_USER":"Sorawit",
+        "DB_PASSWORD" :"5LrpKg4PlWgXC0l2",
+        "DB_NAME":"goodsmeal"
+
+    }
+}
