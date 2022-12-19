@@ -66,7 +66,8 @@ const createDailyMenus = async (req, res, next) => {
         menuName: order.menuName,
         menuId: order.menuId,
         supplierId: order.supplierId,
-        amount:0
+        amount:0,
+        suborders: []
       });
       return createdDailyMenu.save();
     });

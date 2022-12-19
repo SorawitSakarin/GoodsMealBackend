@@ -9,6 +9,7 @@ const dailyMenuSchema = new Schema({
     menuId: {type: mongoose.Types.ObjectId, required: true},
     supplierId: {type: mongoose.Types.ObjectId, required: true},
     amount: {type: Number, required: true},
+    suborders:  [{type: mongoose.Types.ObjectId, required: true, ref:'SubOrder'}]
 });
 
 module.exports = mongoose.model('DailyMenu',dailyMenuSchema);

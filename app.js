@@ -2,11 +2,12 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const placeRoutes = require("./routes/places-routes");
-const userRoutes = require("./routes/users-routes");
 const menuRoutes = require("./routes/menu-routes");
 const suppliersRoutes = require("./routes/suppliers-routes");
 const dailyMenuRoutes = require("./routes/daily-menu-routes");
+const customerRoutes = require("./routes/customers-routes");
+const locationRoutes = require("./routes/location-routes");
+const arealeaderRoutes = require("./routes/arealeader-routes");
 const HttpError = require("./models/http-error");
 
 
@@ -21,11 +22,12 @@ app.use((req,res,next) => {
     next();
   });
   
-app.use("/api/places", placeRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/menus", menuRoutes);
-app.use("/api/supplier", suppliersRoutes);
+app.use("/api/suppliers", suppliersRoutes);
 app.use("/api/dailymenus", dailyMenuRoutes);
+app.use("/api/customers", customerRoutes);
+app.use("/api/locations", locationRoutes);
+app.use("/api/arealeaders", arealeaderRoutes);
 
 app.use((req, res, next) => {
   const error = new HttpError("Could not find this route by HttpError", 404);
