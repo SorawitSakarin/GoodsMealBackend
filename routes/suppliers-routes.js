@@ -5,8 +5,13 @@ const suppliersControllers = require("../controllers/suppliers-controllers");
 const router = express.Router();
 
 //Path   = local4000/api/users
-router.get("/:supplierId", suppliersControllers.getSupplier);
+router.get("/:supplierEmail", suppliersControllers.getSupplier);
 
-router.post("/", suppliersControllers.createSupplier);
+
+router.patch(
+  "/:supplierEmail",
+  [check("auth").not().isEmpty()],
+  suppliersControllers.signUpSupplier
+);
 
 module.exports = router;

@@ -6,13 +6,13 @@ const Supplier = require("../models/supplier");
 
 const getSupplier = async (req, res, next) => {
   
-  const supplierId = req.params.supplierId;
+  const supplierEmail = req.params.supplierEmail;
   let supplier;
   try {
-    supplier = await Supplier.findById(supplierId);
+    supplier = await Supplier.findOne({ email: supplierEmail });
   } catch (err) {
     const error = new HttpError(
-      "เกิดผิดปกติในการหา Supplier จาก ID",
+      "เกิดผิดปกติในการหา Supplier จาก Email",
       500
     );
     console.log('Error')
@@ -20,50 +20,59 @@ const getSupplier = async (req, res, next) => {
   }
   if (!supplier) {
     const error = new HttpError(
-      `หา Supplier จาก ID: ${supplierId} นี้ไม่เจอ `,
+      `หา Supplier จาก Email: ${supplierEmail} นี้ไม่เจอ `,
       404
     );
     console.log('Error2')
     return next(error);
   }
   console.log('Ok เลย')
-  res.json({ supplier: supplier.toObject({ getters: true }) }); //getters:true  คือเอา _ หน้า id ออก
+  res.json({ message: 'OK'}); //getters:true  คือเอา _ หน้า id ออก
 };
 
 
 
-const createSupplier = async (req, res, next) => {
+const signUpSupplier = async (req, res, next) => {
   
-  const { name, address } = req.body;
-  // const title = req.body.title;
-  const createdSupplier = new Supplier({
-    name: name,
-    address: address,
-    location: {
-      lat:'d',
-      lng:'df'
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      console.log(error);
+      return next(new HttpError("Invalid input, Please check your input", 422));
     }
-  });
-
   
-
-  try {
-    // const sess = await mongoose.startSession();
-    // sess.startTransaction();
-    await createdSupplier.save();   //{session:sess}
-    // await sess.commitTransaction();
-  } catch (err) {
-    const error = new HttpError(`มีบางอย่างผิดพลาด ${name} ${address}`, 500);
-    return next(error);
-  }
-
-
+    const { auth } = req.body;
+    const supplierEmail = req.params.supplierEmail;
   
-  res.status(201).json({ supplier: 'created success' });
-};
+    let supplier;
+    try {
+      supplier = await Supplier.findOne({ email: supplierEmail });
+    } catch(err) {
+      const error = new HttpError( "เกิดผิดปกติในการหา Supplier จาก Email",500);
+      return next(error);
+    }
+  
+    if (!supplier) {
+      const error = new HttpError("หา Supplier จากเมลล์นี้ไม่เจอ", 500);
+      return next(error);
+    } else {
+      console.log(supplier);
+    }
+
+    supplier.firebaseAuth = auth;
+
+    try {
+      await supplier.save();
+    } catch(err) {
+      const error = new HttpError('Something went wrong, could not update Supplier',500);
+      console.log(supplier);
+      return next(error);
+    }
+    res.status(200).json({ message:'SignUp Success' });
+  };
+
 
 exports.getSupplier = getSupplier;
 
-exports.createSupplier =createSupplier;
+exports.signUpSupplier =signUpSupplier;
 
 
