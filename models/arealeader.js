@@ -15,9 +15,16 @@ const arealeaderSchema = new Schema({
     salary:{type: String, required:true},
     sex:{type: String, required:true},
     dob:{type: String, required:true},
-    address:{type: String, required:true},
     tel:{type: String, required:true ,unique:true},   //unique ทำให้ค้นหาไวขึ้น
-    locationCode: { type: String,  ref:'Location'}
+    location:{
+        province:{type: String, required:true},
+        district: {type: String, required:true},
+        subDistrict:{type: String, required:true},
+        postalCode:{type: String, required:true},
+        address:{type: String, required:true},
+        locationCode: { type: String, required:true, ref:'Location'}
+    },
+    
 
 });
 
