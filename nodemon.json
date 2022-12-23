@@ -2,7 +2,8 @@
     "env":{
         "DB_USER":"bridgertech",
         "DB_PASSWORD" :"FF1ZM1qNO2kKwX2v",
-        "DB_NAME":"goodsmeal"
+        "DB_NAME":"goodsmeal",
+        "CLIENT_DOMAIN" : "*"
 
     }
 }
