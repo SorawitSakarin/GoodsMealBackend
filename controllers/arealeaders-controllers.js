@@ -5,6 +5,31 @@ const { default: mongoose, mongo } = require("mongoose");
 const AreaLeader = require("../models/arealeader");
 const Location = require("../models/location");
 
+
+const getALByPhoneNumber = async (req, res, next) => {
+  
+  const tel = req.params.tel;
+  let arealeader;
+  try {
+    arealeader = await AreaLeader.findOne({ tel: tel });
+  } catch (err) {
+    const error = new HttpError(
+      "เกิดผิดปกติในการหา AreaLeader จากเบอร์โทรศัพท์",
+      500
+    );
+    return next(error);
+  }
+  if (!arealeader) {
+    const error = new HttpError(
+      `เบอร์: ${tel} ยังไม่ได้ทำการลงทะเบียน `,
+      404
+    );
+    return next(error);
+  }
+  console.log('Ok เลย')
+  res.json({ arealeader: arealeader}); //getters:true  คือเอา _ หน้า id ออก
+};
+
 const createAreaLeader = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -163,3 +188,4 @@ const approveAreaLeader = async (req, res, next) => {
 
 exports.createAreaLeader = createAreaLeader;
 exports.approveAreaLeader = approveAreaLeader;
+exports.getALByPhoneNumber = getALByPhoneNumber;

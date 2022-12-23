@@ -5,7 +5,7 @@ const arealeadersControllers = require("../controllers/arealeaders-controllers")
 const router = express.Router();
 
 //Path   = local4000/api/users
-// router.get("/:locationCode", customersControllers.getCustomersByLocationCode);
+router.get("/:tel", arealeadersControllers.getALByPhoneNumber);
 
 router.post(
   "/create",
